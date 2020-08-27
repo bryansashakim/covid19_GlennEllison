@@ -1,0 +1,388 @@
+---
+title: "Testing Pods"
+author: "Bryan Kim"
+date: "8/16/2020"
+output: pdf_document
+---
+
+```{r}
+##### Installing Packages ####
+library(dplyr)
+library(data.table)
+library(data.tree);library(DiagrammeR);library(treemap);library(treemap)
+
+### Functions used ###
+## Draws a random number from a uniform distribution (0,delta)
+rand_time=function(){
+  return(runif(1,0,delta))
+}
+## Draws a random number from a uniform distribution (0,1)
+test_correct=function(){
+  return(runif(1,0,1))
+}
+## Randomly infects one person from the n family members
+rand_inf=function(){
+  return(sample.int(n,1))
+}
+
+## a_i7: time at which individual i's disease will progress to the next step. Infinite when the individual is already recovered
+infect_other=function(curr_time){
+  return(curr_time+rexp(1,(rho_sq/B)))
+}
+
+## S->E Transition time random draw
+susc_exp=function(curr_time){
+  return(curr_time+rexp(1,(1/h*R0f*gamma_IR)))
+}
+## E->I Transition time random draw
+exp_infect=function(curr_time){
+  return(curr_time+rexp(1,(1/gamma_EI)))
+}
+## I->R Transition time random draw
+infect_recov=function(curr_time){
+  return(curr_time+rexp(1,(1/gamma_IR)))
+}
+## I->Is Transition time random draw
+infect_infectsympt=function(curr_time){
+  return(curr_time+rexp(1,(1/gamma_IIs)))
+}
+## Is->R Transition time random draw
+infectsymp_recov=function(curr_time){
+  return(curr_time+rexp(1,(1/gamma_IsR)))
+}
+## mean 1/Beta
+exp_beta=function(curr_time){
+  return(curr_time+rexp(1,(1/B)))
+}
+
+## mean rho_sq/Beta
+rho_beta=function(curr_time){
+  return(curr_time+rexp(1,(rho_sq/B)))
+}
+
+
+## Return the next state of disease
+dis_prog=function(current){
+  if (current=="S") {
+    return("E")
+  }
+  else if (current=="E") {
+    return("I")
+  }
+  else if (current=="I") {
+    return("Is")
+  }
+  else {
+    return("R")
+  }
+  assign('A',A,envir = .GlobalEnv)
+}
+## Update the time at which individual i will cause a new infection
+new_infect_time=function(c,A){
+  if (A[c,1] %in% c("I","Is")) {
+        if (A[c,2]=="Free") {
+          A[c,7]=exp_beta(curr_time)
+          print("Free- line 79 called")
+        } else if (A[c,2]=="SelfQ") {
+          A[c,7]=infect_other(curr_time)
+          print("SelfQ- line 83 called")
+        } else {
+          A[c,7]=1000000
+          print("Q- line 86 called")
+        }
+  }
+  assign('A',A,envir = .GlobalEnv)
+}
+
+## Initialize state of new individuals
+new_state=function(){
+  c("E","Free","Unidentified","Known","NA")
+}
+new_time=function(){
+  c(rexp(1,(1/gamma_EI)),1000000,runif(1,curr_time,curr_time*delta),1000000,1000000)
+}
+
+## Disease Progression Function
+dis_prog1=function() {
+    A[c,1]=dis_prog(A[c,1])
+    ## Updating the parts of i's state describing the next disease evolution
+      if (A[c,1]=="I") {
+        y=infect_infectsympt(curr_time);z=infect_recov(curr_time)
+        if (y<z) {
+          A[c,6]=y;A[c,5]="Is"
+        } else {
+          A[c,6]=z;A[c,5]="R"
+        }
+      new_infect_time(c,A)
+      assign('A',A,envir = .GlobalEnv)
+      } else if (A[c,1]=="Is") {
+        A[c,6]=infectsymp_recov(curr_time)
+        new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+      } else { # New state is R
+        A[c,6]=1000000;A[c,7]=1000000
+        new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+      }
+    #new_infect_time(c,A) # updating the time at which i will cause a new infection
+    #assign('A',A,envir = .GlobalEnv)
+}
+
+## New Infection Function
+new_infect1=function() {
+  if (!(A[c,1] %in% c("I","Is"))) {print("new_infect1 called but state is not I")}
+      r=r+1;A[r,1:5]=new_state(); A[r,6:10]=new_time();assign('r',r,envir = .GlobalEnv) # New infection that we add as a row to the matrix
+      #new_infect_time(c,A);assign('A',A,envir = .GlobalEnv) # update the next person that person i will infect. 
+      new_infect_time(c,A)
+      update_tree() # update tree
+      assign('A',A,envir = .GlobalEnv)
+}
+
+## Test Function
+test1=function() {
+    if (!(A[c,1] %in% c("I","Is"))) { # state is not I or Is - test is surely negative
+      A[c,4]="W-"; A[c,8]=curr_time+delta; A[c,9]=curr_time+d_test
+    } else { # state is I or Is
+       # first draw from uniform(0,1) because we are dealing with the probability the test is positive
+        if (runif(1,0,1) < p_test) { 
+          A[c,4]="W+"; A[c,8]=1000000; A[c,9]=curr_time+d_test
+        }
+    }
+  assign('A',A,envir = .GlobalEnv)
+}
+
+## Test Result Function
+test_result1=function() {
+  if (!(A[c,4] %in% c("W-","W+"))) {print("column not Waiting - something is wrong!!!")}
+  if (A[c,4]=="W-" & A[c,2]=="SelfQ") {A[c,4]="Known"; A[c,9]=1000000; A[c,2]="Free"} else if (A[c,4]=="W-" & A[c,2]!="SelfQ") {A[c,4]="Known"; A[c,9]=1000000} else if (A[c,4]=="W+") {A[c,2]="Q"; A[c,4]="Known"; A[c,7]=1000000; A[c,9]=1000000}
+  
+  ### Positive test by person i starts contact tracing that may update the rows corresponding to several others.
+## Getting the people person i infected and the person that infected person i
+  J=as.numeric(c(tree$to[tree$from==c]));append(J,as.numeric(tree$from[tree$to==c]))
+  submatrix=as.matrix(A[J,6:10])
+  #for each j:
+  submatrix[,5]=apply(submatrix, 1, function(j) {if (runif(1,0,1) < p_contact) { # Identified
+      x=rlnorm(1,mu_contact,sig_contact)
+      if (!((j[5]<curr_time+x))) { j[5]=curr_time+x }
+  } else { # Unidentified
+      j[5]=1000000
+  }})
+  A[J,6:10]=submatrix
+  
+  assign('A',A,envir = .GlobalEnv)
+}
+
+## Contact Traced to Positive case
+contact_traced1=function() {
+  A[c,2]="SelfQ"
+  if (A[c,4]!="W+") {
+    A[c,9]=curr_time+d_test
+      if (A[c,1] %in% c("I","Is")) {
+          if (runif(1,0,1) < p_test) {A[c,3]="W+"} else {A[c,3]="W-"}
+      }
+  }
+  if (A[c,1] %in% c("I","Is")) {
+    A[c,7]=rho_beta(curr_time)
+  }
+  A[c,10]=1000000
+  assign('A',A,envir = .GlobalEnv)
+}
+
+####################################################################################################
+##########################################  Data.Tree ##############################################
+tree=Node$new(1)
+#nxt=tree$AddChild(2)
+#nxt$AddChild(4)
+update_tree=function(c) {
+  if (c==1) { assign(paste("node",r,sep=""),tree$AddChild(r)) } else { assign(paste("node",r,sep=""),eval(as.name(paste("node",c,sep="")))$AddChild(r)) }
+  assign('tree',tree,envir = .GlobalEnv);assign('paste("node",r,sep="")',eval(as.name(paste("node",r,sep=""))),envir = .GlobalEnv);assign('paste("node",c,sep="")',eval(as.name(paste("node",c,sep=""))),envir = .GlobalEnv)
+}
+
+update_tree=function() {
+  tree=rbind(tree,c(c,r))
+  assign('tree',tree,envir = .GlobalEnv)
+}
+
+
+####################################################################################################
+
+####################################################################################
+### Positive test by person i starts contact tracing that may update the rows corresponding to several others.
+## Getting the people person i infected and the person that infected person i
+tree_df=ToDataFrameNetwork(tree)
+J=as.numeric(c(tree_df$to[tree_df$from==c]));append(J,as.numeric(tree_df$from[tree_df$to==c]))
+submatrix=as.matrix(A[J,6:10])
+#for each j:
+submatrix[,5]=apply(submatrix, 1, function(j) {if (runif(1,0,1) < p_contact) { # Identified
+    x=rlnorm(1,mu_contact,sig_contact)
+    if (!((j[5]<curr_time+x))) { j[5]=curr_time+x }
+} else { # Unidentified
+    j[5]=1000000
+}})
+A[J,6:10]=submatrix
+
+####################################################################################
+if (runif(1,0,1) <= p_contact) { # Identified                                      #
+    x=rlnorm(1,mu_contact,sig_contact)                                             #
+    if (!((A[j,10]<curr_time+x) & (A[j,3]=="Identified"))) { A[j,10]=curr_time+x } #
+} else { # Unidentified                                                            #
+    A[j,10]=1000000                                                                #
+}
+####################################################################################
+
+####################################################################################################
+
+ ##### Setting Parameters, Functions, and initial conditions #####
+t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.2;B=R0*gamma_IR;p_test=0.85;d_test=0.5;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
+
+# Random time drawn and random infected person drawn
+t=rand_time()
+infect=rand_inf()
+
+####################################################################################################
+
+t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.2;B=R0*gamma_IR;p_test=0.85;d_test=0.5;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
+
+algo=function() {
+#######################################################        
+# index to see how many iterations it takes
+i=0
+# index to mark our row (each person is a row!)
+c=1
+# index to create new rows
+r=1
+assign('r',r,envir = .GlobalEnv);assign('c',c,envir = .GlobalEnv);assign('i',i,envir = .GlobalEnv)
+###########################################################################################
+########## First iteration process (in the beginning there is only individual 1) ########## 
+# Initialize matrix & tree
+tree=Node$new(1);tree=ToDataFrameNetwork(tree)
+A=data.frame(v1=rep("",1),v2=rep("",1),v3=rep("",1),v4=rep("",1),v5=rep("",1),v6=rep(NA,1),v7=rep(NA,1),v8=rep(NA,1),v9=rep(NA,1),v10=rep(NA,1))
+A[1,1:5]=c("E","Free","Unidentified","Known","NA")
+#A[1,]=c(1,1,1,1,1)
+A[1,6]=rexp(1,(1/gamma_EI))
+A[1,7]=1000000
+A[1,8]=runif(1,0,delta)
+A[1,9]=1000000 # simulate large numbers
+A[1,10]=1000000 # simulate large numbers
+assign('A',A,envir = .GlobalEnv)
+min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr_time,envir = .GlobalEnv)
+ ###########################################################################################    
+    # Check if epidemic ended: All individuals either recovered, or in permanent quarantine, or if the epidemic has reached the upper bound.
+  while (!(("R" %in% unique(A[,1])&length(unique(A[,1]==1))) | ("Quarantine" %in% unique(A[,2])&length(unique(A[,2]==1))) | (r==5))) {
+      i=i+1
+      #### if we do not stop the algo:
+      ### Find the smallest time!
+      m=as.matrix(A[,6:10])
+      c=which(m==min(m),arr.ind = TRUE)[1];jloc=which(m==min(m),arr.ind = TRUE)[2]+5
+      curr_time=A[c,jloc];assign('curr_time',curr_time,envir = .GlobalEnv);assign('c',c,envir = .GlobalEnv)
+      #########################################################
+      if (jloc==6) { 
+               A[c,1]=dis_prog(A[c,1])
+        ## Updating the parts of i's state describing the next disease evolution
+          if (A[c,1]=="I") {
+            y=infect_infectsympt(curr_time);z=infect_recov(curr_time)
+            if (y<z) {
+              A[c,6]=y;A[c,5]="Is"
+            } else {
+              A[c,6]=z;A[c,5]="R"
+            }
+          new_infect_time(c,A)
+          assign('A',A,envir = .GlobalEnv)
+          } else if (A[c,1]=="Is") {
+            A[c,6]=infectsymp_recov(curr_time)
+            new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+          } else { # New state is R
+            A[c,6]=1000000;A[c,7]=1000000
+            new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+          }
+        #new_infect_time(c,A) # updating the time at which i will cause a new infection
+        #assign('A',A,envir = .GlobalEnv)
+      } else if (jloc==7) {
+        if (!(A[c,1] %in% c("I","Is"))) {print("new_infect1 called but state is not I")}
+      r=r+1;A[r,1:5]=new_state(); A[r,6:10]=new_time();assign('r',r,envir = .GlobalEnv) # New infection that we add as a row to the matrix
+      #new_infect_time(c,A);assign('A',A,envir = .GlobalEnv) # update the next person that person i will infect. 
+      new_infect_time(c,A)
+      update_tree() # update tree
+      assign('A',A,envir = .GlobalEnv)
+        #new_infect1()
+        print("new_infect")
+      } else if (jloc==8) {
+        if (!(A[c,1] %in% c("I","Is"))) { # state is not I or Is - test is surely negative
+      A[c,4]="W-"; A[c,8]=curr_time+delta; A[c,9]=curr_time+d_test
+    } else { # state is I or Is
+       # first draw from uniform(0,1) because we are dealing with the probability the test is positive
+        if (runif(1,0,1) < p_test) { 
+          A[c,4]="W+"; A[c,8]=1000000; A[c,9]=curr_time+d_test
+        }
+    }
+  assign('A',A,envir = .GlobalEnv)
+        #test1()
+        print("test")
+      } else if (jloc==9) {
+        if (!(A[c,4] %in% c("W-","W+"))) {print("column not Waiting - something is wrong!!!")}
+  if (A[c,4]=="W-" & A[c,2]=="SelfQ") {A[c,4]="Known"; A[c,9]=1000000; A[c,2]="Free"} else if (A[c,4]=="W-" & A[c,2]!="SelfQ") {A[c,4]="Known"; A[c,9]=1000000} else if (A[c,4]=="W+") {A[c,2]="Q"; A[c,4]="Known"; A[c,7]=1000000; A[c,9]=1000000}
+  
+  ### Positive test by person i starts contact tracing that may update the rows corresponding to several others.
+## Getting the people person i infected and the person that infected person i
+  J=as.numeric(c(tree$to[tree$from==c]));append(J,as.numeric(tree$from[tree$to==c]))
+  submatrix=as.matrix(A[J,6:10])
+  #for each j:
+  submatrix[,5]=apply(submatrix, 1, function(j) {if (runif(1,0,1) < p_contact) { # Identified
+      x=rlnorm(1,mu_contact,sig_contact)
+      if (!((j[5]<curr_time+x))) { j[5]=curr_time+x }
+  } else { # Unidentified
+      j[5]=1000000
+  }})
+  A[J,6:10]=submatrix
+  
+  assign('A',A,envir = .GlobalEnv)
+        #test_result1()
+        print("test_result")
+      } else { # else jloc==10: Contact traced to positive case
+        A[c,2]="SelfQ"
+  if (A[c,4]!="W+") {
+    A[c,9]=curr_time+d_test
+      if (A[c,1] %in% c("I","Is")) {
+          if (runif(1,0,1) < p_test) {A[c,3]="W+"} else {A[c,3]="W-"}
+      }
+  }
+  if (A[c,1] %in% c("I","Is")) {
+    A[c,7]=rho_beta(curr_time)
+  }
+  A[c,10]=1000000
+  assign('A',A,envir = .GlobalEnv)
+      }
+      #########################################################
+  }
+  print(paste(r, "people are infected", sep=""))
+  
+}
+
+
+```
+
+```{r}
+   # Find which time is smallest
+    if (min_time==1) { # Disease progression
+          A[1,1]=dis_prog(A[1,1])
+          y=infect_infectsympt(curr_time);z=infect_recov(curr_time)
+          if (y<z) {
+            A[1,6]=y;A[1,5]="Is"
+          } else {
+            A[1,6]=z;A[1,5]="R"
+          }
+          new_infect_time(1,A)
+    } else if (min_time==2) { # New infection
+          node2=tree$AddChild(2);tree=ToDataFrameNetwork(tree) # add to transmission tree
+          r=2; A[r,1:5]=new_state(); A[r,6:10]=new_time(); assign('r',r,envir = .GlobalEnv) # New infection that we add as a row to the matrix
+          new_infect_time(1,A) # update the next person that person 1 will infect. 
+          assign('A',A,envir = .GlobalEnv)
+    } else { # Test
+      # Test is surely negative since we start with "E"
+      A[1,4]="W-"
+      A[1,8]=curr_time+delta
+      A[1,9]=curr_time+d_test
+      assign('A',A,envir = .GlobalEnv)
+    }
+i=i+1
+  
+```
+

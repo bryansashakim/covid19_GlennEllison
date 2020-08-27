@@ -1,0 +1,647 @@
+---
+title: "RunMultipopSIR2"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+```{r}
+################################################
+### Create one function for all of the above ###
+################################################
+
+# RunPlot function
+
+RunPlot <- function(R0,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible) {
+  
+  AvgR0 <- mean(R0)
+  Avg.Sug.Herd.Immunity.Thresh <- 1-(1/AvgR0)
+  
+  # Making these local outputs global
+  assign('AvgR0',AvgR0,envir = .GlobalEnv)
+  assign('Avg.Sug.Herd.Immunity.Thresh',Avg.Sug.Herd.Immunity.Thresh,envir = .GlobalEnv)
+  
+  DerivedInfected.x_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+DerivedSuscep_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+NewCases_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+DerivedInfected.x_DF[1,] <- Vec.Initial.Infect.Shares
+DerivedSuscep_DF[1,] <- Vec.Initial.Susceptible
+
+
+# Run SIR_Eval
+for (i in 1:length(DerivedInfected.x_DF$i.1)) {
+    for (j in 1:10) {
+      NewCases_DF[i,j]<-DerivedSuscep_DF[i,j]*R0[j]*(h*DerivedInfected.x_DF[i,j]+(1-h)*(DerivedInfected.x_DF[i,1]*R0[1]+DerivedInfected.x_DF[i,2]*R0[2]+DerivedInfected.x_DF[i,3]*R0[3]+DerivedInfected.x_DF[i,4]*R0[4]+DerivedInfected.x_DF[i,5]*R0[5]+DerivedInfected.x_DF[i,6]*R0[6]+DerivedInfected.x_DF[i,7]*R0[7]+DerivedInfected.x_DF[i,8]*R0[8]+DerivedInfected.x_DF[i,9]*R0[9]+DerivedInfected.x_DF[i,10]*R0[10])/(10*AvgR0))*lambda;
+      DerivedInfected.x_DF[i+1,j] <- (1-lambda)*(DerivedInfected.x_DF[i,j])+NewCases_DF[i,j];
+      DerivedSuscep_DF[i+1,j]<-(DerivedSuscep_DF[i,j]-NewCases_DF[i,j]);
+    }
+  }
+  DerivedInfected.x_DF<-DerivedInfected.x_DF[-length(DerivedInfected.x_DF$i.1),]
+  DerivedSuscep_DF<-DerivedSuscep_DF[-length(DerivedSuscep_DF$i.1),]
+  assign('DerivedInfected.x_DF',DerivedInfected.x_DF,envir = .GlobalEnv)
+  assign('DerivedSuscep_DF',DerivedSuscep_DF,envir = .GlobalEnv)
+  assign('NewCases_DF',NewCases_DF,envir = .GlobalEnv)
+
+
+# Total Infected Vector
+
+TotalInfected_DF<-data.frame(time=rep(0,length(DerivedInfected.x_DF$i.1)))
+TotalInfected_DF$Total_Infected<-rowMeans(DerivedInfected.x_DF)
+for (i in 1:length(TotalInfected_DF$Total_Infected)) {
+  TotalInfected_DF[i,1]<-i
+}
+assign('TotalInfected_DF',TotalInfected_DF,envir = .GlobalEnv)
+
+# Total Suceptible Vector
+TotalSusceptible_DF<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+TotalSusceptible_DF$Total_Susceptible<-rowMeans(DerivedSuscep_DF)
+for (i in 1:length(TotalSusceptible_DF$Total_Susceptible)) {
+  TotalSusceptible_DF[i,1]<-i
+}
+assign('TotalSusceptible_DF',TotalSusceptible_DF,envir = .GlobalEnv)
+
+
+# Newly Infected Vector
+NewlyInfected_DF <- data.frame(NewlyInfected=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 2:length(NewlyInfected_DF$NewlyInfected)) {
+  NewlyInfected_DF[i,1]<-TotalInfected_DF[i+1,2]-TotalInfected_DF[i,2]*(1-lambda)
+}
+#NewlyInfected_DF[371,1]<-3.544639e-12
+assign('NewlyInfected_DF',NewlyInfected_DF,envir = .GlobalEnv)
+
+# Apparent R0
+ApparentR0_DF <- data.frame(ApparentR0=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(ApparentR0_DF$ApparentR0)-1) {
+  ApparentR0_DF[i,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*lambda)
+}
+ApparentR0_DF[371,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*TotalSusceptible_DF[i,1]*lambda)
+# Suggested Herd Threshold
+SugHerdThresh_DF <-data.frame(SuggestedHerdThreshold=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(SugHerdThresh_DF$SuggestedHerdThreshold)) {
+  SugHerdThresh_DF[i,1]<-1-1/ApparentR0_DF[i,1]
+}
+# Plots
+TotalInfected_DF$group<-1
+TotalSusceptible_DF$group<-2
+names(TotalInfected_DF)[2]<-"values"
+names(TotalSusceptible_DF)[2]<-"values"
+helper<-rbind(TotalInfected_DF,TotalSusceptible_DF) # creating helper dataframe to use ggplot features
+assign('TotalInfected_DF',TotalInfected_DF,envir = .GlobalEnv)
+assign('TotalSusceptible_DF',TotalSusceptible_DF,envir = .GlobalEnv)
+
+
+assign('helper',helper,envir = .GlobalEnv)
+
+p <- ggplot(helper,aes(x=time,y=values,group=group)) +
+  geom_line()
+# print(p + ggtitle("has parameters:"))
+return(p)
+}
+
+
+RunPlotWithFactor <- function(R0,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible) {
+  
+  AvgR0 <- mean(R0)
+  Avg.Sug.Herd.Immunity.Thresh <- 1-(1/AvgR0)
+  
+  # Making these local outputs global
+  assign('AvgR0',AvgR0,envir = .GlobalEnv)
+  assign('Avg.Sug.Herd.Immunity.Thresh',Avg.Sug.Herd.Immunity.Thresh,envir = .GlobalEnv)
+  
+  DerivedInfected.x_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+DerivedSuscep_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+NewCases_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+DerivedInfected.x_DF[1,] <- Vec.Initial.Infect.Shares
+DerivedSuscep_DF[1,] <- Vec.Initial.Susceptible
+
+Factor <- data.frame("factor"=c(rep(1,55),0.95,0.9,0.85,0.8,0.75,0.7,0.65,0.6,0.55,0.5,0.45,0.4,rep(0.35,24),rep(0.7,280)))
+assign('Factor',Factor,envir = .GlobalEnv)
+
+
+# Run SIR_Eval
+for (i in 1:length(DerivedInfected.x_DF$i.1)) {
+    for (j in 1:10) {
+      NewCases_DF[i,j]<-DerivedSuscep_DF[i,j]*R0[j]*(h*DerivedInfected.x_DF[i,j]+(1-h)*(DerivedInfected.x_DF[i,1]*R0[1]+DerivedInfected.x_DF[i,2]*R0[2]+DerivedInfected.x_DF[i,3]*R0[3]+DerivedInfected.x_DF[i,4]*R0[4]+DerivedInfected.x_DF[i,5]*R0[5]+DerivedInfected.x_DF[i,6]*R0[6]+DerivedInfected.x_DF[i,7]*R0[7]+DerivedInfected.x_DF[i,8]*R0[8]+DerivedInfected.x_DF[i,9]*R0[9]+DerivedInfected.x_DF[i,10]*R0[10])/(10*AvgR0))*lambda*Factor[i,1];
+      DerivedInfected.x_DF[i+1,j] <- (1-lambda)*(DerivedInfected.x_DF[i,j])+NewCases_DF[i,j];
+      DerivedSuscep_DF[i+1,j]<-(DerivedSuscep_DF[i,j]-NewCases_DF[i,j]);
+    }
+  }
+  DerivedInfected.x_DF<-DerivedInfected.x_DF[-length(DerivedInfected.x_DF$i.1),]
+  DerivedSuscep_DF<-DerivedSuscep_DF[-length(DerivedSuscep_DF$i.1),]
+  assign('DerivedInfected.x_DF',DerivedInfected.x_DF,envir = .GlobalEnv)
+  assign('DerivedSuscep_DF',DerivedSuscep_DF,envir = .GlobalEnv)
+  assign('NewCases_DF',NewCases_DF,envir = .GlobalEnv)
+
+
+# Total Infected Vector
+
+TotalInfected_DF<-data.frame(time=rep(0,length(DerivedInfected.x_DF$i.1)))
+TotalInfected_DF$Total_Infected<-rowMeans(DerivedInfected.x_DF)
+for (i in 1:length(TotalInfected_DF$Total_Infected)) {
+  TotalInfected_DF[i,1]<-i
+}
+assign('TotalInfected_DF',TotalInfected_DF,envir = .GlobalEnv)
+
+# Total Suceptible Vector
+TotalSusceptible_DF<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+TotalSusceptible_DF$Total_Susceptible<-rowMeans(DerivedSuscep_DF)
+for (i in 1:length(TotalSusceptible_DF$Total_Susceptible)) {
+  TotalSusceptible_DF[i,1]<-i
+}
+assign('TotalSusceptible_DF',TotalSusceptible_DF,envir = .GlobalEnv)
+
+
+# Newly Infected Vector
+NewlyInfected_DF <- data.frame(NewlyInfected=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 2:length(NewlyInfected_DF$NewlyInfected)) {
+  NewlyInfected_DF[i,1]<-TotalInfected_DF[i+1,2]-TotalInfected_DF[i,2]*(1-lambda)
+}
+#NewlyInfected_DF[371,1]<-3.544639e-12
+assign('NewlyInfected_DF',NewlyInfected_DF,envir = .GlobalEnv)
+
+
+# Apparent R0
+ApparentR0_DF <- data.frame(ApparentR0=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(ApparentR0_DF$ApparentR0)-1) {
+  ApparentR0_DF[i,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*lambda)
+}
+ApparentR0_DF[371,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*TotalSusceptible_DF[i,1]*lambda)
+# Suggested Herd Threshold
+SugHerdThresh_DF <-data.frame(SuggestedHerdThreshold=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(SugHerdThresh_DF$SuggestedHerdThreshold)) {
+  SugHerdThresh_DF[i,1]<-1-1/ApparentR0_DF[i,1]
+}
+# Plots
+TotalInfected_DF$group<-1
+TotalSusceptible_DF$group<-2
+names(TotalInfected_DF)[2]<-"values"
+names(TotalSusceptible_DF)[2]<-"values"
+helper<-rbind(TotalInfected_DF,TotalSusceptible_DF) # creating helper dataframe to use ggplot features
+assign('TotalInfected_DF',TotalInfected_DF,envir = .GlobalEnv)
+assign('TotalSusceptible_DF',TotalSusceptible_DF,envir = .GlobalEnv)
+assign('helper',helper,envir = .GlobalEnv)
+
+p <- ggplot(helper,aes(x=time,y=values,group=group)) +
+  geom_line()
+# print(p + ggtitle("has parameters:"))
+return(p)
+}
+
+```
+
+
+```{r CHART 1}
+
+lambda <- 0.1
+N <- 10
+
+### CHART 1
+
+## Scenario 1
+h<-0.7
+R0.1 <- c(1.0,1.0,1.0,1.5,1.5,1.5,1.5,1.5,1.5,5.0)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P1 <- RunPlot(R0.1,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+# CumulativeVector
+Cumulative_DF<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF$cumulative1<-0
+Cumulative_DF$cumulative1[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF$cumulative1)) {
+  Cumulative_DF[i,1]<-i
+}
+
+## Scenario 2
+
+h<-0.7
+R0.2 <- c(0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.6,2.6,5.4)
+Vec.Initial.Infect.Shares <- c(0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P2 <- RunPlot(R0.2,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+Cumulative_DF2<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF2$cumulative2<-0
+Cumulative_DF2$cumulative2[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF2$cumulative2)) {
+  Cumulative_DF2[i,1]<-i
+}
+
+## Merging the two scenarios 
+
+df<-merge(Cumulative_DF,Cumulative_DF2,by="time")
+dfMelted=reshape2::melt(df,id.var="time")
+names(dfMelted)[2]<-"Scenario"
+
+Chart1 = ggplot(dfMelted,aes(x=time,y=value,colour=Scenario,shape=Scenario)) +
+  geom_line(size=1.02) +
+  scale_color_manual(labels=c("Scenario 1","Scenario 2"),values=c("blue","red")) +
+  xlab("Time") +
+  ylab("Cases per 100K") +
+  ggtitle("Cumulative Cases: Scenarios 1 and 2") +
+  theme_minimal()
+
+
+
+Chart1<-arrangeGrob(Chart1)
+ggsave("Chart1.pdf")
+
+```
+
+```{r CHART 2}
+
+lambda <- 0.1
+N <- 10
+
+### CHART 2
+
+## Scenario 3
+h<-0.7
+R0.3 <- c(1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,3.63,3.63)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P3 <- RunPlotWithFactor(R0.3,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+# CumulativeVector
+Cumulative_DF3<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF3$cumulative3<-0
+Cumulative_DF3$cumulative3[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF3$cumulative3)) {
+  Cumulative_DF3[i,1]<-i
+}
+
+## Scenario 4
+
+h<-0.7
+R0.4 <- c(0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,3.55,3.55)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P4 <- RunPlotWithFactor(R0.4,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+Cumulative_DF4<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF4$cumulative4<-0
+Cumulative_DF4$cumulative4[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF4$cumulative4)) {
+  Cumulative_DF4[i,1]<-i
+}
+
+
+## Merging the two scenarios 
+
+df2<-merge(Cumulative_DF3,Cumulative_DF4,by="time")
+dfMelted2=reshape2::melt(df2,id.var="time")
+names(dfMelted2)[2]<-"Scenario"
+
+Chart2 = ggplot(dfMelted2,aes(x=time,y=value,colour=Scenario,shape=Scenario)) +
+  geom_line(size=1.02) +
+  scale_color_manual(labels=c("Scenario 3","Scenario 4"),values=c("blue","red")) +
+  xlab("Time") +
+  ylab("Cases per 100K")+
+  ggtitle("Cumulative Cases: Scenarios 3 and 4") +
+  theme_minimal()
+
+Chart2<-arrangeGrob(Chart2)
+ggsave("Chart2.pdf")
+
+```
+
+```{r CHART 3}
+
+lambda <- 0.1
+N <- 10
+
+### CHART 3
+
+## Scenario 1
+h<-0.7
+R0.1 <- c(1.0,1.0,1.0,1.5,1.5,1.5,1.5,1.5,1.5,5.0)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P1 <- RunPlot(R0.1,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF$"1"<-0
+for (i in 1:length(NewInfected_DF$"1")) {
+  NewInfected_DF[i,1]<-i
+}
+NewInfected_DF$"1"[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+## Scenario 2
+
+h<-0.7
+R0.2 <- c(0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.6,2.6,5.4)
+Vec.Initial.Infect.Shares <- c(0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001,0.0000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P2 <- RunPlot(R0.2,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF2<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF2$"2"<-0
+for (i in 1:length(NewInfected_DF2$"2")) {
+  NewInfected_DF2[i,1]<-i
+}
+NewInfected_DF2$"2"[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+# Merging NewInfected_DF and NewInfected_DF2
+
+# Only want to show first 180 days
+NewInfected_DF=NewInfected_DF[-c(211:371),]
+NewInfected_DF2=NewInfected_DF2[-c(211:371),]
+
+df3<-merge(NewInfected_DF,NewInfected_DF2,by="time")
+dfMelted3=reshape2::melt(df3,id.var="time")
+names(dfMelted3)[2]<-"Population"
+
+
+
+Chart3 = ggplot(dfMelted3,aes(x=time,y=value,colour=Population,shape=Population)) +
+  geom_line(aes(linetype=Population, colour=Population),size=1.002) +
+  scale_color_manual(values=c("blue","red")) +
+  xlab("Days") +
+  ylab("Daily New Cases per Million") +
+  ggtitle("Epidemic Paths in Two Heterogeneous Populations") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.7)) +
+  ylim(0,15000) +
+  scale_x_continuous(breaks=seq(0,210,by=30))
+  theme_minimal()
+
+Chart3
+
+Chart3<-arrangeGrob(Chart3)
+ggsave("Chart3.pdf")
+
+```
+
+```{r CHART 4}
+lambda <- 0.1
+N <- 10
+
+### CHART 4
+
+## Scenario 3
+h<-0.7
+R0.3 <- c(1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,3.63,3.63)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P3 <- RunPlotWithFactor(R0.3,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF3<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF3$new3<-0
+for (i in 1:length(NewInfected_DF3$new3)) {
+  NewInfected_DF3[i,1]<-i
+}
+NewInfected_DF3$new3[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+## Scenario 4
+
+h<-0.7
+R0.4 <- c(0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,3.55,3.55)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P4 <- RunPlotWithFactor(R0.4,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF4<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF4$new4<-0
+for (i in 1:length(NewInfected_DF4$new4)) {
+  NewInfected_DF4[i,1]<-i
+}
+NewInfected_DF4$new4[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+# Merging NewInfected_DF and NewInfected_DF2
+
+df4<-merge(NewInfected_DF3,NewInfected_DF4,by="time")
+dfMelted4=reshape2::melt(df4,id.var="time")
+names(dfMelted4)[2]<-"Scenario"
+
+Chart4 = ggplot(dfMelted4,aes(x=time,y=value,colour=Scenario,shape=Scenario)) +
+  geom_line(size=0.98,linetype="dashed") +
+  scale_color_manual(labels=c("Scenario 3","Scenario 4"),values=c("blue","red")) +
+  xlab("Time") +
+  ylab("Cases per 1 Million") +
+  ggtitle("New Cases: Scenarios 3 and 4") +
+  theme_minimal()
+
+Chart4<-arrangeGrob(Chart4)
+ggsave("Chart4.pdf")
+
+g<-grid.arrange(Chart1,Chart2,Charts3,Chart4)
+g<-arrangeGrob(Chart1,Chart2,Charts3,Chart4)
+ggsave("g.pdf",width = 8,height=4,dpi=300)
+
+```
+
+
+```{r Scenario 3-4 Figure}
+
+lambda <- 0.1
+N <- 10
+
+### Left side
+
+## Scenario 3
+h<-0.7
+R0.3 <- c(1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,3.63,3.63)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P3 <- RunPlotWithFactor(R0.3,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF3<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF3$"3"<-0
+for (i in 1:length(NewInfected_DF3$"3")) {
+  NewInfected_DF3[i,1]<-i
+}
+NewInfected_DF3$"3"[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+## Scenario 4
+
+h<-0.7
+R0.4 <- c(0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,3.55,3.55)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P4 <- RunPlotWithFactor(R0.4,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+### NewlyInfectedVector
+NewInfected_DF4<-data.frame(time=rep(0,length(NewlyInfected_DF$NewlyInfected)))
+NewInfected_DF4$"4"<-0
+for (i in 1:length(NewInfected_DF4$"4")) {
+  NewInfected_DF4[i,1]<-i
+}
+NewInfected_DF4$"4"[2:371]<-10*(NewlyInfected_DF$NewlyInfected[2:371]*100000)
+
+# Merging NewInfected_DF and NewInfected_DF2
+
+# Only want to show first 270 days
+NewInfected_DF3=NewInfected_DF3[-c(271:371),]
+NewInfected_DF4=NewInfected_DF4[-c(271:371),]
+
+df4<-merge(NewInfected_DF3,NewInfected_DF4,by="time")
+dfMelted4=reshape2::melt(df4,id.var="time")
+names(dfMelted4)[2]<-"Population"
+
+ChartL = ggplot(dfMelted4,aes(x=time,y=value,colour=Population,shape=Population)) +
+  geom_line(aes(linetype=Population, colour=Population),size=1.002) +
+  scale_color_manual(values=c("blue","red")) +
+  xlab("Days") +
+  ylab("Daily New Cases per Million") +
+  geom_vline(xintercept = 55,color="gray",size=0.5) +
+  geom_vline(xintercept = 92,color="gray",size=0.5) +
+  ggtitle("Daily New Cases") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.5)) +
+  ylim(0,5000) +
+  scale_x_continuous(breaks=seq(0,270,by=30))
+  theme_minimal()
+
+ChartL
+
+
+### Right side
+
+## Scenario 3
+h<-0.7
+R0.3 <- c(1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,3.63,3.63)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+P3 <- RunPlotWithFactor(R0.3,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+# CumulativeVector
+Cumulative_DF3<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF3$"3"<-0
+Cumulative_DF3$"3"[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF3$"3")) {
+  Cumulative_DF3[i,1]<-i
+}
+
+## Scenario 4
+
+h<-0.7
+R0.4 <- c(0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,3.55,3.55)
+Vec.Initial.Infect.Shares <- c(0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001,0.000001)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+P4 <- RunPlotWithFactor(R0.4,Vec.Initial.Infect.Shares,Vec.Initial.Susceptible)
+
+Cumulative_DF4<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+Cumulative_DF4$"4"<-0
+Cumulative_DF4$"4"[2:371]<-((1-TotalSusceptible_DF$values[2:371])*100000)
+for (i in 1:length(Cumulative_DF4$"4")) {
+  Cumulative_DF4[i,1]<-i
+}
+
+
+## Merging the two scenarios 
+
+# Only want to show first 270 days
+Cumulative_DF3=Cumulative_DF3[-c(271:371),]
+Cumulative_DF4=Cumulative_DF4[-c(271:371),]
+
+df2<-merge(Cumulative_DF3,Cumulative_DF4,by="time")
+dfMelted2=reshape2::melt(df2,id.var="time")
+names(dfMelted2)[2]<-"Population"
+
+ChartR = ggplot(dfMelted2,aes(x=time,y=value,colour=Population,shape=Population)) +
+  geom_line(aes(linetype=Population, colour=Population),size=1.002) +
+  scale_color_manual(values=c("blue","red")) +
+  xlab("Days") +
+  ylab("Cumulative Cases per 100K")+
+  geom_vline(xintercept = 55,color="gray",size=0.5) +
+  geom_vline(xintercept = 92,color="gray",size=0.5) +
+  ggtitle("Cumulative Cases") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.5)) +
+  ylim(0,43000) +
+  scale_x_continuous(breaks=seq(0,270,by=30))
+  theme_minimal() 
+
+ChartR
+
+g<-plot_grid(ChartL,ChartR,nrow=1,ncol=2,rel_heights = c(1,1),rel_widths = c(100,100))
+ggsave("g.pdf",width = 10,height=4,dpi=300)
+
+
+g<-grid.arrange(ChartL,ChartR,ncol=2,nrow=1)
+g<-arrangeGrob(arrangeGrob(ChartL,ChartR,ncol=2,nrow = 1),widths = 10,heights = 4)
+ggsave("g.pdf",width = 10,height=4,dpi=300)
+
+# To show side by side
+#library(patchwork)
+#library(magrittr)
+#library(multipanelfigure)
+
+#fig<-multi_panel_figure(columns=2,rows=1,panel_label_type = "none")
+#fig %<>%
+ # fill_panel(ChartL,column=1,row=1) %<>%
+  #fill_panel(ChartR,column=2,row=1) 
+#fig
+
+
+```
+
+
+```{r Aggregated Charts}
+
+dfAgg1<-merge(df,df3,by="time")
+dfAgg2<-merge(df2,df4,by="time")
+
+dfAggMelt1=reshape2::melt(dfAgg1,id.var="time")
+dfAggMelt2=reshape2::melt(dfAgg2,id.var="time")
+
+
+names(dfAggMelt1)[2]<-"Scenario"
+names(dfAggMelt2)[2]<-"Scenario"
+
+dfAggMelt1$group=0
+dfAggMelt1[1:371,4]=1
+dfAggMelt1[743:1113,4]=1
+
+dfAggMelt2$group=0
+dfAggMelt2[1:371,4]=1
+dfAggMelt2[743:1113,4]=1
+
+
+
+
+dfAggMelt1$group<-as.factor(dfAggMelt1$group)
+dfAggMelt2$group<-as.factor(dfAggMelt2$group)
+
+ChartsAgg = ggplot(dfAggMelt1,aes(x=time,y=value,group=Scenario,shape=Scenario)) +
+  geom_line(aes(linetype=Scenario,col=group),size=1.02) +
+  scale_linetype_manual(name="Scenarios",values=c("solid","dashed","solid","dotdash")) +
+  xlab("Time") +
+  ylab("New cases per 1M/Cumulative per 100K") +
+  ggtitle("Paths of Two Epidemics") +
+  scale_colour_manual(name="Scenario",values=c("red","blue","red","blue")) +
+  guides(col=FALSE,linetype=FALSE)
+
+ChartsAgg<-arrangeGrob(ChartsAgg)
+ggsave("ChartsAgg.pdf")
+
+ChartsAgg2 = ggplot(dfAggMelt2,aes(x=time,y=value,group=Scenario,shape=Scenario)) +
+  geom_line(aes(linetype=Scenario,col=group),size=1.02) +
+  scale_linetype_manual(name="Scenarios",values=c("solid","dashed","solid","dotdash")) +
+  xlab("Time") +
+  ylab("New cases per 1M/Cumulative per 100K") +
+  ggtitle("Paths of Two Epidemics with Shutdown and Partial Reopening") +
+  scale_colour_manual(name="Scenario",values=c("red","blue","red","blue")) +
+  guides(col=FALSE,linetype=FALSE)
+
+ChartsAgg2<-arrangeGrob(ChartsAgg2)
+ggsave("ChartsAgg2.pdf")
+
+g<-grid.arrange(ChartsAgg,ChartsAgg2)
+g<-arrangeGrob(ChartsAgg,ChartsAgg2)
+ggsave("g.pdf")
+
+
+
+```
+

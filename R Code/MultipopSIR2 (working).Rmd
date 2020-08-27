@@ -1,0 +1,136 @@
+---
+title: "MultipopSIR2"
+output:
+  html_notebook: default
+  pdf_document: default
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+
+```{r}
+##########################
+### Setting parameters ###
+##########################
+
+lambda <- 0.1
+h <- 0
+N <- 10
+
+# ** What is this?? **
+#LR.Inf <- 1-TS[357]
+
+R0 <- c(1.0,1.0,1.0,1.0,1.0,1.0,2.0,2.0,3.0,5.0)
+AvgR0 <- mean(R0)
+Avg.Sug.Herd.Immunity.Thresh <- 1-(1/AvgR0)
+
+Vec.Initial.Infect.Shares <- c(0.00001,0,0,0,0,0,0,0,0,0)
+Vec.Initial.Susceptible <- c(1,1,1,1,1,1,1,1,1,1)
+
+##########################
+### Creating Data Sets ###
+##########################
+
+# Create Data Frame for Derived Infected values
+DerivedInfected.x_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+
+# Create Data Frame for Derived Susceptible values
+DerivedSuscep_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+
+# Create Data Frame for New Cases values
+NewCases_DF <- data.frame("i=1"=rep(NA,371),"i=2"=rep(NA,371),"i=3"=rep(NA,371),"i=4"=rep(NA,371),"i=5"=rep(NA,371),"i=6"=rep(NA,371),"i=7"=rep(NA,371),"i=8"=rep(NA,371),"i=9"=rep(NA,371),"i=10"=rep(NA,371),stringsAsFactors = FALSE)
+
+# Initializing first row of DerivedInfected.x_DF with Vec.Initial.Infect.Shares
+DerivedInfected.x_DF[1,] <- Vec.Initial.Infect.Shares
+
+# Initializing first row of DerivedSuscep_DF with Vec.Initial.Susceptible
+DerivedSuscep_DF[1,] <- Vec.Initial.Susceptible
+
+##########################
+#### Evaluating Model ####
+##########################
+
+# Global SIR_Eval Function
+SIR_Eval <- function(df1,df2,df3) {
+  for (i in 1:length(DerivedInfected.x_DF$i.1)) {
+    for (j in 1:10) {
+      NewCases_DF[i,j]<-DerivedSuscep_DF[i,j]*R0[j]*(h*DerivedInfected.x_DF[i,j]+(1-h)*(DerivedInfected.x_DF[i,1]*R0[1]+DerivedInfected.x_DF[i,2]*R0[2]+DerivedInfected.x_DF[i,3]*R0[3]+DerivedInfected.x_DF[i,4]*R0[4]+DerivedInfected.x_DF[i,5]*R0[5]+DerivedInfected.x_DF[i,6]*R0[6]+DerivedInfected.x_DF[i,7]*R0[7]+DerivedInfected.x_DF[i,8]*R0[8]+DerivedInfected.x_DF[i,9]*R0[9]+DerivedInfected.x_DF[i,10]*R0[10])/(10*AvgR0))*lambda;
+      DerivedInfected.x_DF[i+1,j] <- (1-lambda)*(DerivedInfected.x_DF[i,j])+NewCases_DF[i,j];
+      DerivedSuscep_DF[i+1,j]<-(DerivedSuscep_DF[i,j]-NewCases_DF[i,j]);
+    }
+  }
+  DerivedInfected.x_DF<-DerivedInfected.x_DF[-length(DerivedInfected.x_DF$i.1),]
+  DerivedSuscep_DF<-DerivedSuscep_DF[-length(DerivedSuscep_DF$i.1),]
+  assign('DerivedInfected.x_DF',DerivedInfected.x_DF,envir = .GlobalEnv)
+  assign('DerivedSuscep_DF',DerivedSuscep_DF,envir = .GlobalEnv)
+  assign('NewCases_DF',NewCases_DF,envir = .GlobalEnv)
+
+}
+
+# Calling function
+SIR_Eval(DerivedInfected.x_DF,DerivedSuscep_DF,NewCases_DF)
+
+# Local Outputs #
+# Total Infected Vector
+TotalInfected_DF<-data.frame(time=rep(0,length(DerivedInfected.x_DF$i.1)))
+TotalInfected_DF$Total_Infected<-rowMeans(DerivedInfected.x_DF)
+for (i in 1:length(TotalInfected_DF$Total_Infected)) {
+  TotalInfected_DF[i,1]<-i
+}
+
+# Total Suceptible Vector
+TotalSusceptible_DF<-data.frame(time=rep(0,length(DerivedSuscep_DF$i.1)))
+TotalSusceptible_DF$Total_Susceptible<-rowMeans(DerivedSuscep_DF)
+for (i in 1:length(TotalSusceptible_DF$Total_Susceptible)) {
+  TotalSusceptible_DF[i,1]<-i
+}
+
+# Newly Infected Vector
+NewlyInfected_DF <- data.frame(NewlyInfected=rep(NA,370),stringsAsFactors = FALSE)
+for (i in 2:length(NewlyInfected_DF$NewlyInfected)) {
+  NewlyInfected_DF[i,1]<-TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda)
+}
+
+# Apparent R0
+ApparentR0_DF <- data.frame(ApparentR0=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(ApparentR0_DF$ApparentR0)-1) {
+  ApparentR0_DF[i,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*lambda)
+}
+ApparentR0_DF[371,1]<-(TotalInfected_DF[i+1,1]-TotalInfected_DF[i,1]*(1-lambda))/(TotalInfected_DF[i,1]*TotalSusceptible_DF[i,1]*lambda)
+# ** Discrepancy in last row of this vector: should it be NA or a numerical value in that cell?
+
+# Suggested Herd Threshold
+SugHerdThresh_DF <-data.frame(SuggestedHerdThreshold=rep(NA,371),stringsAsFactors = FALSE)
+for (i in 1:length(SugHerdThresh_DF$SuggestedHerdThreshold)) {
+  SugHerdThresh_DF[i,1]<-1-1/ApparentR0_DF[i,1]
+}
+
+##########################
+####      Plots       ####
+##########################
+
+## Installing necessary packages
+#install.packages("ggplot2") # 
+#library(ggplot2)
+#install.packages("tidyverse")
+#library(tidyverse)
+
+# Plotting Total_Infected and Total_Susceptible
+TotalInfected_DF$group<-1
+TotalSusceptible_DF$group<-2
+names(TotalInfected_DF)[2]<-"values"
+names(TotalSusceptible_DF)[2]<-"values"
+helper<-rbind(TotalInfected_DF,TotalSusceptible_DF) # creating helper dataframe to use ggplot features
+p <- ggplot(helper,aes(x=time,y=values,group=group,col=group)) +
+  geom_line()
+print(p)
+
+
+
+
+
+```
+
+

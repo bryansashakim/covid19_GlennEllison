@@ -1,0 +1,1166 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  9 JUN 2020 23:18
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**HeteroSIR4.tex
+(./HeteroSIR4.tex
+LaTeX2e <2018-04-01> patch level 2
+Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/04/06 v1.3b Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/latin9.def
+File: latin9.def 2018/04/06 v1.3b Input encoding file
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/rotfloat/rotfloat.sty
+Package: rotfloat 2004/01/04 v1.2 Combining float+rotating package (AS)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count88
+\float@exts=\toks16
+\float@box=\box26
+\@float@everytoks=\toks17
+\@floatcapt=\box27
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/rotating.sty
+Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks18
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+)
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@r@tfl@t=\count89
+\rotFPtop=\skip43
+\rotFPbot=\skip44
+\rot@float@box=\box28
+\rot@mess@toks=\toks19
+)
+Package rotfloat Info: float package v1.3 detected on input line 74.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2017/09/02 v2.17a AMS math features
+\@mathmargin=\skip45
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen105
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen106
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count90
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count91
+\leftroot@=\count92
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count93
+\DOTSCASE@=\count94
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box29
+\strutbox@=\box30
+\big@size=\dimen107
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count95
+\c@MaxMatrixCols=\count96
+\dotsspace@=\muskip10
+\c@parentequation=\count97
+\dspbrk@lvl=\count98
+\tag@help=\toks21
+\row@=\count99
+\column@=\count100
+\maxfields@=\count101
+\andhelp@=\toks22
+\eqnshift@=\dimen108
+\alignsep@=\dimen109
+\tagshift@=\dimen110
+\tagwidth@=\dimen111
+\totwidth@=\dimen112
+\lineht@=\dimen113
+\@envbody=\toks23
+\multlinegap=\skip46
+\multlinetaggap=\skip47
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen114
+\captionmargin@=\dimen115
+\captionwidth=\dimen116
+\caption@tempdima=\dimen117
+\caption@indent=\dimen118
+\caption@parindent=\dimen119
+\caption@hangindent=\dimen120
+)
+\c@ContinuedFloat=\count102
+Package caption Info: float package is loaded.
+Package caption Info: rotating package is loaded.
+)
+\c@subfigure=\count103
+\c@subtable=\count104
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/biblatex.sty
+Package: biblatex 2018/03/04 v3.11 programmable bibliographies (PK/MW)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/01/30 v0.27 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2018/02/11 v2.5e e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count105
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/logreq/logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count106
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/logreq/logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/xstring/xstring.sty
+(/usr/local/texlive/2018/texmf-dist/tex/generic/xstring/xstring.tex
+\@xs@message=\write3
+\integerpart=\count107
+\decimalpart=\count108
+)
+Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
+)
+\c@tabx@nest=\count109
+\c@listtotal=\count110
+\c@listcount=\count111
+\c@liststart=\count112
+\c@liststop=\count113
+\c@citecount=\count114
+\c@citetotal=\count115
+\c@multicitecount=\count116
+\c@multicitetotal=\count117
+\c@instcount=\count118
+\c@maxnames=\count119
+\c@minnames=\count120
+\c@maxitems=\count121
+\c@minitems=\count122
+\c@citecounter=\count123
+\c@savedcitecounter=\count124
+\c@uniquelist=\count125
+\c@uniquename=\count126
+\c@refsection=\count127
+\c@refsegment=\count128
+\c@maxextratitle=\count129
+\c@maxextratitleyear=\count130
+\c@maxextradate=\count131
+\c@maxextraalpha=\count132
+\c@abbrvpenalty=\count133
+\c@highnamepenalty=\count134
+\c@lownamepenalty=\count135
+\c@maxparens=\count136
+\c@parenlevel=\count137
+\blx@tempcnta=\count138
+\blx@tempcntb=\count139
+\blx@tempcntc=\count140
+\blx@maxsection=\count141
+\blx@maxsegment@0=\count142
+\blx@notetype=\count143
+\blx@parenlevel@text=\count144
+\blx@parenlevel@foot=\count145
+\blx@sectionciteorder@0=\count146
+\labelnumberwidth=\skip48
+\labelalphawidth=\skip49
+\biblabelsep=\skip50
+\bibitemsep=\skip51
+\bibnamesep=\skip52
+\bibinitsep=\skip53
+\bibparsep=\skip54
+\bibhang=\skip55
+\blx@bcfin=\read1
+\blx@bcfout=\write4
+\c@mincomprange=\count147
+\c@maxcomprange=\count148
+\c@mincompwidth=\count149
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/blx-dm.def
+File: blx-dm.def 2018/03/04 v3.11 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex citestyle data model...
+Package biblatex Info: ... file 'authoryear-comp.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count150
+\c@savedafterword=\count151
+\c@annotator=\count152
+\c@savedannotator=\count153
+\c@author=\count154
+\c@savedauthor=\count155
+\c@bookauthor=\count156
+\c@savedbookauthor=\count157
+\c@commentator=\count158
+\c@savedcommentator=\count159
+\c@editor=\count160
+\c@savededitor=\count161
+\c@editora=\count162
+\c@savededitora=\count163
+\c@editorb=\count164
+\c@savededitorb=\count165
+\c@editorc=\count166
+\c@savededitorc=\count167
+\c@foreword=\count168
+\c@savedforeword=\count169
+\c@holder=\count170
+\c@savedholder=\count171
+\c@introduction=\count172
+\c@savedintroduction=\count173
+\c@namea=\count174
+\c@savednamea=\count175
+\c@nameb=\count176
+\c@savednameb=\count177
+\c@namec=\count178
+\c@savednamec=\count179
+\c@translator=\count180
+\c@savedtranslator=\count181
+\c@shortauthor=\count182
+\c@savedshortauthor=\count183
+\c@shorteditor=\count184
+\c@savedshorteditor=\count185
+\c@labelname=\count186
+\c@savedlabelname=\count187
+\c@institution=\count188
+\c@savedinstitution=\count189
+\c@lista=\count190
+\c@savedlista=\count191
+\c@listb=\count192
+\c@savedlistb=\count193
+\c@listc=\count194
+\c@savedlistc=\count195
+\c@listd=\count196
+\c@savedlistd=\count197
+\c@liste=\count198
+\c@savedliste=\count199
+\c@listf=\count266
+\c@savedlistf=\count267
+\c@location=\count268
+\c@savedlocation=\count269
+\c@organization=\count270
+\c@savedorganization=\count271
+\c@origlocation=\count272
+\c@savedoriglocation=\count273
+\c@origpublisher=\count274
+\c@savedorigpublisher=\count275
+\c@publisher=\count276
+\c@savedpublisher=\count277
+\c@language=\count278
+\c@savedlanguage=\count279
+\c@origlanguage=\count280
+\c@savedoriglanguage=\count281
+\c@pageref=\count282
+\c@savedpageref=\count283
+\shorthandwidth=\skip56
+\shortjournalwidth=\skip57
+\shortserieswidth=\skip58
+\shorttitlewidth=\skip59
+\shortauthorwidth=\skip60
+\shorteditorwidth=\skip61
+\locallabelnumberwidth=\skip62
+\locallabelalphawidth=\skip63
+\localshorthandwidth=\skip64
+\localshortjournalwidth=\skip65
+\localshortserieswidth=\skip66
+\localshorttitlewidth=\skip67
+\localshortauthorwidth=\skip68
+\localshorteditorwidth=\skip69
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/blx-compat.def
+File: blx-compat.def 2018/03/04 v3.11 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/biblatex.def
+File: biblatex.def 2018/03/04 v3.11 biblatex compatibility (PK/MW)
+\c@textcitecount=\count284
+\c@textcitetotal=\count285
+\c@textcitemaxnames=\count286
+\c@biburlnumpenalty=\count287
+\c@biburlucpenalty=\count288
+\c@biburllcpenalty=\count289
+\c@smartand=\count290
+)
+Package biblatex Info: Trying to load natbib compatibility...
+Package biblatex Info: ... file 'blx-natbib.def' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/blx-natbib.def
+File: blx-natbib.def 2018/03/04 v3.11 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2018/03/04 v3.11 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
+File: standard.bbx 2018/03/04 v3.11 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count291
+\c@bbx:relatedtotal=\count292
+))
+Package biblatex Info: Trying to load citation style 'authoryear-comp'...
+Package biblatex Info: ... file 'authoryear-comp.cbx' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/cbx/authoryear-comp.cbx
+File: authoryear-comp.cbx 2018/03/04 v3.11 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\footcites'.
+Package biblatex Info: Redefining '\footcitetexts'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/biblatex.cfg
+File: biblatex.cfg 
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/csquotes/csquotes.sty
+Package: csquotes 2018/02/11 v5.2c context-sensitive quotations (JAW)
+\csq@reset=\count293
+\csq@gtype=\count294
+\csq@glevel=\count295
+\csq@qlevel=\count296
+\csq@maxlvl=\count297
+\csq@tshold=\count298
+\csq@ltx@everypar=\toks25
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/csquotes/csquotes.def
+File: csquotes.def 2018/02/11 v5.2c csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/csquotes/csquotes.cfg
+File: csquotes.cfg 
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 709.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 2017/06/25 v1.7b (e)psfig emulation (SPQR)
+\epsfxsize=\dimen121
+\epsfysize=\dimen122
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/harvard/harvard.sty
+Package: harvard 
+
+
+/usr/local/texlive/2018/texmf-dist/tex/latex/harvard/harvard.sty:92: LaTeX Erro
+r: Command \HAR@checkdef already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.92 }
+      
+? 
+
+/usr/local/texlive/2018/texmf-dist/tex/latex/harvard/harvard.sty:191: LaTeX Err
+or: Command \citename already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.191 }
+       
+? 
+
+/usr/local/texlive/2018/texmf-dist/tex/latex/harvard/harvard.sty:208: LaTeX Err
+or: Command \citeyear already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.208 ...ar}{\@ifstar{\HAR@citeyrnb}{\HAR@citeyr}}
+                                                  
+? 
+) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/grffile.sty
+Package: grffile 2017/06/30 v1.18 Extended file name support for graphics (HO)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+Package grffile Info: Option `multidot' is set to `true'.
+Package grffile Info: Option `extendedchars' is set to `false'.
+Package grffile Info: Option `space' is set to `true'.
+Package grffile Info: \Gin@ii of package `graphicx' fixed on input line 494.
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/pdfsync/pdfsync.sty
+Package: pdfsync 2008/01/26 v1.1
+)
+\c@theorem=\count299
+\c@prop=\count300
+\c@lemma=\count301
+\c@cor=\count302
+\c@conjecture=\count303
+\c@example=\count304
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/lbx/english.lbx
+File: english.lbx 2018/03/04 v3.11 biblatex localization (PK/MW)
+)
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... none found.
+
+No file HeteroSIR4.aux.
+\openout1 = `HeteroSIR4.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+(/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count305
+\scratchdimen=\dimen123
+\scratchbox=\box31
+\nofMPsegments=\count306
+\nofMParguments=\count307
+\everyMPshowfont=\toks26
+\MPscratchCnt=\count308
+\MPscratchDim=\dimen124
+\MPnumerator=\count309
+\makeMPintoPDFobject=\count310
+\everyMPtoPDFconversion=\toks27
+) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+Package biblatex Info: Input encoding 'latin9' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'latin9'.
+\openout4 = `HeteroSIR4.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'HeteroSIR4.bbl' not found.
+
+No file HeteroSIR4.bbl.
+Package biblatex Info: Reference section=0 on input line 77.
+Package biblatex Info: Reference segment=0 on input line 77.
+Configuring pdfsync
+\PDFSYNC@ut=\write5
+\openout5 = `HeteroSIR4.pdfsync'.
+
+\PDFSYNCf@li@=\count311
+\PDFSYNC@rder=\count312
+**** pdfsync.sty: Synchronizing at \everypar
+\PDFSYNCeveryp@r=\toks28
+**** pdfsync.sty: Synchronizing at \everymath
+\PDFSYNCeverym@th=\toks29
+**** pdfsync.sty: Synchronizing at \everyhbox
+\PDFSYNCeveryhb@x=\toks30
+**** pdfsync.sty: Synchronizing at \everyvbox
+\PDFSYNCeveryvb@x=\toks31
+**** pdfsync.sty: started
+LaTeX Font Info:    Try loading font information for U+msa on input line 86.
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 86.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 86.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 86.
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 86.
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 86.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 1 undefined on input line 1
+08.
+
+
+LaTeX Warning: Citation 'lippi2020simple' on page 1 undefined on input line 108
+.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 1 undefined on input line
+ 108.
+
+
+LaTeX Warning: Citation 'eichenbaum2020macroeconomics' on page 1 undefined on i
+nput line 108.
+
+
+LaTeX Warning: Citation 'farboodi2020internal' on page 1 undefined on input lin
+e 108.
+
+
+LaTeX Warning: Citation 'fernandez2020estimating' on page 1 undefined on input 
+line 108.
+
+
+LaTeX Warning: Citation 'jones2020optimal' on page 1 undefined on input line 10
+8.
+
+
+LaTeX Warning: Citation 'rowthorn2012optimal' on page 1 undefined on input line
+ 108.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 108--108
+[][][][]\OT1/cmr/m/n/9 See among oth-ers []; []; [];
+ []
+
+
+Underfull \hbox (badness 2698) in paragraph at lines 108--108
+[]\OT1/cmr/m/n/9 ; []; []; [];
+ []
+
+
+LaTeX Warning: Citation 'kermack1927contribution' on page 1 undefined on input 
+line 113.
+
+
+LaTeX Warning: Citation 'champredon2018two' on page 1 undefined on input line 1
+16.
+
+
+LaTeX Warning: Citation 'viboud2018rapidd' on page 1 undefined on input line 11
+6.
+
+
+LaTeX Warning: Citation 'unwin2020state' on page 1 undefined on input line 116.
+
+
+[1
+
+{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+
+LaTeX Warning: Citation 'gomes2020individual' on page 2 undefined on input line
+ 141.
+
+
+LaTeX Warning: Citation 'britton2020disease' on page 2 undefined on input line 
+141.
+
+[2]
+
+LaTeX Warning: Citation 'dushoff1995effects' on page 3 undefined on input line 
+156.
+
+
+LaTeX Warning: Citation 'britton1998estimation' on page 3 undefined on input li
+ne 159.
+
+
+LaTeX Warning: Citation 'demiris2005bayesian' on page 3 undefined on input line
+ 159.
+
+
+LaTeX Warning: Citation 'lloydsmith2005superspreading' on page 3 undefined on i
+nput line 159.
+
+
+LaTeX Warning: Citation 'champredon2018two' on page 3 undefined on input line 1
+59.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--159
+[][][][]\OT1/cmr/m/n/9 See, for ex-am-ple, []; []; [];
+ []
+
+
+LaTeX Warning: Citation 'gomes2020individual' on page 3 undefined on input line
+ 162.
+
+
+LaTeX Warning: Citation 'britton2020disease' on page 3 undefined on input line 
+164.
+
+
+LaTeX Warning: Citation 'worobey2020emergence' on page 3 undefined on input lin
+e 167.
+
+
+LaTeX Warning: Citation 'miller2020full' on page 3 undefined on input line 170.
+
+
+[3]
+
+LaTeX Warning: Citation 'avery2020policy' on page 4 undefined on input line 173
+.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 4 undefined on input line 1
+74.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 4 undefined on input line
+ 174.
+
+
+LaTeX Warning: Citation 'favero2020restarting' on page 4 undefined on input lin
+e 174.
+
+
+LaTeX Warning: Citation 'rampini2020sequential' on page 4 undefined on input li
+ne 174.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 4 undefined on input line 1
+74.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 4 undefined on input line
+ 174.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 4 undefined on input line 1
+78.
+
+
+LaTeX Warning: Citation 'favero2020restarting' on page 4 undefined on input lin
+e 179.
+
+[4] [5]
+
+LaTeX Warning: Reference `f:symmetry' on page 6 undefined on input line 234.
+
+
+LaTeX Warning: Citation 'ferguson2020impact' on page 6 undefined on input line 
+235.
+
+
+LaTeX Warning: File `npi-fig-1a.png' not found on input line 239.
+
+
+./HeteroSIR4.tex:239: Package pdftex.def Error: File `npi-fig-1a.png' not found
+: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.239 ...th, keepaspectratio=true]{npi-fig-1a.png}
+                                                  
+? 
+
+LaTeX Warning: Citation 'ferguson2020impact' on page 6 undefined on input line 
+240.
+
+
+LaTeX Warning: Citation 'ferguson2020impact' on page 6 undefined on input line 
+240.
+
+
+LaTeX Warning: Citation 'andreasen1989persistence' on page 6 undefined on input
+ line 254.
+
+
+LaTeX Warning: Citation 'may1989transmission' on page 6 undefined on input line
+ 254.
+
+
+LaTeX Warning: Citation 'diekmann1990definition' on page 6 undefined on input l
+ine 254.
+
+
+LaTeX Warning: Citation 'dushoff1995effects' on page 6 undefined on input line 
+254.
+
+
+LaTeX Warning: Citation 'jacquez1995core' on page 6 undefined on input line 254
+.
+
+
+LaTeX Warning: Citation 'hethcote2000mathematics' on page 6 undefined on input 
+line 254.
+
+
+LaTeX Warning: Citation 'van2002reproduction' on page 6 undefined on input line
+ 254.
+
+
+LaTeX Warning: Citation 'dushoff1995effects' on page 6 undefined on input line 
+254.
+
+
+Underfull \hbox (badness 1052) in paragraph at lines 254--254
+[][][][]\OT1/cmr/m/n/9 See []; []; []; [];
+ []
+
+[6] [7] [8] [9] [10]
+
+LaTeX Warning: Citation 'diekmann1990definition' on page 11 undefined on input 
+line 375.
+
+
+LaTeX Warning: Citation 'dushoff1995effects' on page 11 undefined on input line
+ 375.
+
+[11]
+
+LaTeX Warning: Citation 'atkeson2020deadly' on page 12 undefined on input line 
+410.
+
+
+LaTeX Warning: Citation 'fernandez2020estimating' on page 12 undefined on input
+ line 410.
+
+
+LaTeX Warning: Citation 'korolev2020identification' on page 12 undefined on inp
+ut line 410.
+
+
+LaTeX Warning: Citation 'stock2020coronavirus' on page 12 undefined on input li
+ne 410.
+
+
+LaTeX Warning: Citation 'fernandez2020estimating' on page 12 undefined on input
+ line 417.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 12 undefined on input line 
+420.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 12 undefined on input lin
+e 420.
+
+
+LaTeX Warning: Citation 'favero2020restarting' on page 12 undefined on input li
+ne 420.
+
+
+LaTeX Warning: Citation 'mossong2008social' on page 12 undefined on input line 
+422.
+
+
+LaTeX Warning: Citation 'klepac2020contacts' on page 12 undefined on input line
+ 422.
+
+[12] [13]
+
+LaTeX Warning: Citation 'ferguson2020impact' on page 14 undefined on input line
+ 436.
+
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 14 undefined on input line 
+436.
+
+
+LaTeX Warning: Citation 'miller2020full' on page 14 undefined on input line 437
+.
+
+
+LaTeX Warning: Reference `f:weakidentification' on page 14 undefined on input l
+ine 443.
+
+[14]
+
+LaTeX Warning: File `HeteroFigureAfterPeakB.pdf' not found on input line 455.
+
+
+./HeteroSIR4.tex:455: Package pdftex.def Error: File `HeteroFigureAfterPeakB.pd
+f' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.455 ...cs[scale=0.6]{HeteroFigureAfterPeakB.pdf}
+                                                  
+? 
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 15 undefined on input lin
+e 471.
+
+[15]
+
+LaTeX Warning: Reference `f:policy' on page 16 undefined on input line 481.
+
+
+LaTeX Warning: File `HeteroFigureAfterPolicyB.pdf' not found on input line 497.
+
+
+
+./HeteroSIR4.tex:497: Package pdftex.def Error: File `HeteroFigureAfterPolicyB.
+pdf' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.497 ...[scale=0.6]{HeteroFigureAfterPolicyB.pdf}
+                                                  
+? 
+[16]
+
+LaTeX Warning: Citation 'ferguson2020impact' on page 17 undefined on input line
+ 517.
+
+
+LaTeX Warning: Citation 'greenstone2020does' on page 17 undefined on input line
+ 518.
+
+[17]
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 18 undefined on input line 
+560.
+
+[18] [19]
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 20 undefined on input line 
+628.
+
+
+LaTeX Warning: Citation 'lippi2020simple' on page 20 undefined on input line 62
+8.
+
+
+LaTeX Warning: Citation 'rowthorn2012optimal' on page 20 undefined on input lin
+e 628.
+
+[20]
+
+LaTeX Warning: Reference `f:lockdown' on page 21 undefined on input line 650.
+
+
+LaTeX Warning: File `HeteroFigure3HCrop.pdf' not found on input line 656.
+
+
+./HeteroSIR4.tex:656: Package pdftex.def Error: File `HeteroFigure3HCrop.pdf' n
+ot found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.656 ...aphics[scale=0.9]{HeteroFigure3HCrop.pdf}
+                                                  
+? 
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 21 undefined on input lin
+e 671.
+
+
+LaTeX Warning: Citation 'farboodi2020internal' on page 21 undefined on input li
+ne 671.
+
+
+LaTeX Warning: Citation 'fernandez2020estimating' on page 21 undefined on input
+ line 671.
+
+
+LaTeX Warning: Citation 'jones2020optimal' on page 21 undefined on input line 6
+71.
+
+
+LaTeX Warning: Citation 'kudlyak2020for' on page 21 undefined on input line 671
+.
+
+
+LaTeX Warning: Citation 'miller2020full' on page 21 undefined on input line 671
+.
+
+
+LaTeX Warning: Citation 'unwin2020state' on page 21 undefined on input line 671
+.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 671--671
+[][][][]\OT1/cmr/m/n/9 See []; []; []; [];
+ []
+
+[21] [22] [23]
+
+LaTeX Warning: Citation 'flaxman2020report' on page 24 undefined on input line 
+722.
+
+
+LaTeX Warning: Citation 'unwin2020state' on page 24 undefined on input line 727
+.
+
+
+LaTeX Warning: Citation 'fernandez2020estimating' on page 24 undefined on input
+ line 727.
+
+[24]
+
+LaTeX Warning: Citation 'lourencco2020fundamental' on page 25 undefined on inpu
+t line 759.
+
+
+LaTeX Warning: Citation 'worobey2020emergence' on page 25 undefined on input li
+ne 772.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 25 undefined on input lin
+e 772.
+
+[25] [26] [27]
+
+LaTeX Warning: Citation 'acemoglu2020multi' on page 28 undefined on input line 
+818.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 28 undefined on input lin
+e 818.
+
+
+LaTeX Warning: Citation 'favero2020restarting' on page 28 undefined on input li
+ne 818.
+
+
+LaTeX Warning: Citation 'baqaee2020reopening' on page 28 undefined on input lin
+e 819.
+
+
+LaTeX Warning: Citation 'miller2020full' on page 28 undefined on input line 831
+.
+
+
+LaTeX Warning: Citation 'worobey2020emergence' on page 28 undefined on input li
+ne 831.
+
+[28]
+
+LaTeX Warning: Empty bibliography on input line 841.
+
+(./HeteroSIR4.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                HeteroSIR4
+(biblatex)                and rerun LaTeX afterwards.
+
+Package logreq Info: Writing requests to 'HeteroSIR4.run.xml'.
+\openout1 = `HeteroSIR4.run.xml'.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 11719 strings out of 492649
+ 198069 string characters out of 6129622
+ 628199 words of memory out of 5000000
+ 15435 multiletter control sequences out of 15000+600000
+ 16287 words of font info for 63 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 42i,21n,47p,1244b,1450s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></
+usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb>
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.p
+fb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pf
+b></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
+></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><
+/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/l
+ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
+/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texl
+ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
+/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/20
+18/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/local/texlive/2018
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2018/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on HeteroSIR4.pdf (28 pages, 346742 bytes).
+PDF statistics:
+ 191 PDF objects out of 1000 (max. 8388607)
+ 135 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
