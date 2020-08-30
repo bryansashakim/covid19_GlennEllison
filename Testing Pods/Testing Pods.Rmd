@@ -10,6 +10,7 @@ output: pdf_document
 library(dplyr)
 library(data.table)
 library(data.tree);library(DiagrammeR);library(treemap);library(treemap)
+library(ggplot2)
 
 ### Functions used ###
 ## Draws a random number from a uniform distribution (0,delta)
@@ -81,13 +82,14 @@ dis_prog=function(current){
 new_infect_time=function(c,A){
   if (A[c,1] %in% c("I","Is")) {
         if (A[c,2]=="Free") {
-          A[c,7]=exp_beta(curr_time)
+          A[c,7]<<-exp_beta(curr_time);assign('A',A,envir = .GlobalEnv)
           print("Free- line 79 called")
+          print(paste(A[c,7],"is what it should be"))
         } else if (A[c,2]=="SelfQ") {
-          A[c,7]=infect_other(curr_time)
+          A[c,7]=infect_other(curr_time);assign('A',A,envir = .GlobalEnv)
           print("SelfQ- line 83 called")
         } else {
-          A[c,7]=1000000
+          A[c,7]=1000000;assign('A',A,envir = .GlobalEnv)
           print("Q- line 86 called")
         }
   }
@@ -207,9 +209,9 @@ update_tree=function() {
 ####################################################################################
 ### Positive test by person i starts contact tracing that may update the rows corresponding to several others.
 ## Getting the people person i infected and the person that infected person i
-tree_df=ToDataFrameNetwork(tree)
-J=as.numeric(c(tree_df$to[tree_df$from==c]));append(J,as.numeric(tree_df$from[tree_df$to==c]))
-submatrix=as.matrix(A[J,6:10])
+#tree_df=ToDataFrameNetwork(tree)
+#J=as.numeric(c(tree_df$to[tree_df$from==c]));append(J,as.numeric(tree_df$from[tree_df$to==c]))
+#submatrix=as.matrix(A[J,6:10])
 #for each j:
 submatrix[,5]=apply(submatrix, 1, function(j) {if (runif(1,0,1) < p_contact) { # Identified
     x=rlnorm(1,mu_contact,sig_contact)
@@ -231,7 +233,7 @@ if (runif(1,0,1) <= p_contact) { # Identified                                   
 ####################################################################################################
 
  ##### Setting Parameters, Functions, and initial conditions #####
-t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.2;B=R0*gamma_IR;p_test=0.85;d_test=0.5;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
+t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.122;B=R0*gamma_IR;p_test=0.85;d_test=0.09;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
 
 # Random time drawn and random infected person drawn
 t=rand_time()
@@ -239,9 +241,22 @@ infect=rand_inf()
 
 ####################################################################################################
 
-t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.2;B=R0*gamma_IR;p_test=0.85;d_test=0.5;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
+t=rand_time();R0=2.5;gamma_EI=1/5;n=7;gamma_IR=1/7;gamma_IsR=1/7;gamma_IIs=1/7;delta=1.122;B=R0*gamma_IR;p_test=0.85;d_test=0.09;h=0.5;p_contact=0.5;mu_contact=1;sig_contact=1;rho_sq=1
+
+infec_df<<-data.frame(delta=rep(0,165),num_infec=rep(0,165))
+recov_df<<-data.frame(delta=rep(0,165),num_recov=rep(0,165))
+iter_df<<-data.frame(index=seq(1,165,1),del=seq(1.02,4.3,.02)) #15 del=seq(1.02,1.3,.02))
+infec_vec=c()
+recov_vec=c()
+
 
 algo=function() {
+ for (j in iter_df$index) {
+   print(paste(j,"IS THE CURRENT FOR LOOP"))
+   delta=iter_df$del[j]
+   
+   marker=1
+  while (marker < 10) { 
 #######################################################        
 # index to see how many iterations it takes
 i=0
@@ -254,7 +269,7 @@ assign('r',r,envir = .GlobalEnv);assign('c',c,envir = .GlobalEnv);assign('i',i,e
 ########## First iteration process (in the beginning there is only individual 1) ########## 
 # Initialize matrix & tree
 tree=Node$new(1);tree=ToDataFrameNetwork(tree)
-A=data.frame(v1=rep("",1),v2=rep("",1),v3=rep("",1),v4=rep("",1),v5=rep("",1),v6=rep(NA,1),v7=rep(NA,1),v8=rep(NA,1),v9=rep(NA,1),v10=rep(NA,1))
+A<<-data.frame(v1=rep("",1),v2=rep("",1),v3=rep("",1),v4=rep("",1),v5=rep("",1),v6=rep(NA,1),v7=rep(NA,1),v8=rep(NA,1),v9=rep(NA,1),v10=rep(NA,1))
 A[1,1:5]=c("E","Free","Unidentified","Known","NA")
 #A[1,]=c(1,1,1,1,1)
 A[1,6]=rexp(1,(1/gamma_EI))
@@ -266,15 +281,19 @@ assign('A',A,envir = .GlobalEnv)
 min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr_time,envir = .GlobalEnv)
  ###########################################################################################    
     # Check if epidemic ended: All individuals either recovered, or in permanent quarantine, or if the epidemic has reached the upper bound.
-  while (!(("R" %in% unique(A[,1])&length(unique(A[,1]==1))) | ("Quarantine" %in% unique(A[,2])&length(unique(A[,2]==1))) | (r==5))) {
-      i=i+1
+  while (!(("R" %in% unique(A[,1])&length(unique(A[,1]))==1) | ("Quarantine" %in% unique(A[,2])&length(unique(A[,2]))==1) | (r==500))) {
+      i=i+1;assign('i',i,envir = .GlobalEnv);
+      ## print(i)
       #### if we do not stop the algo:
       ### Find the smallest time!
       m=as.matrix(A[,6:10])
       c=which(m==min(m),arr.ind = TRUE)[1];jloc=which(m==min(m),arr.ind = TRUE)[2]+5
       curr_time=A[c,jloc];assign('curr_time',curr_time,envir = .GlobalEnv);assign('c',c,envir = .GlobalEnv)
+      #print(curr_time)
+      #print(paste(A[c,7],"should be a finite number"))
       #########################################################
-      if (jloc==6) { 
+      if (jloc==6) {
+       ## print("dis prog")
                A[c,1]=dis_prog(A[c,1])
         ## Updating the parts of i's state describing the next disease evolution
           if (A[c,1]=="I") {
@@ -284,14 +303,63 @@ min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr
             } else {
               A[c,6]=z;A[c,5]="R"
             }
-          new_infect_time(c,A)
+          ###############################  
+          #new_infect_time(c,A)
+          if (A[c,1] %in% c("I","Is")) {
+        if (A[c,2]=="Free") {
+          A[c,7]=exp_beta(curr_time);assign('A',A,envir = .GlobalEnv)
+         ## print("Free- line 79 called")
+          #print(paste(A[c,7],"is what it should be"))
+        } else if (A[c,2]=="SelfQ") {
+          A[c,7]=infect_other(curr_time);assign('A',A,envir = .GlobalEnv)
+         ## print("SelfQ- line 83 called")
+        } else {
+          A[c,7]=1000000;assign('A',A,envir = .GlobalEnv)
+         ## print("Q- line 86 called")
+        }
+  }
+          ###############################
           assign('A',A,envir = .GlobalEnv)
           } else if (A[c,1]=="Is") {
+          ##  print("now Is")
             A[c,6]=infectsymp_recov(curr_time)
-            new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+            ###############################  
+          #new_infect_time(c,A)
+          if (A[c,1] %in% c("I","Is")) {
+        if (A[c,2]=="Free") {
+          A[c,7]<<-exp_beta(curr_time);assign('A',A,envir = .GlobalEnv)
+        ##  print("Free- line 79 called")
+          #print(paste(A[c,7],"is what it should be"))
+        } else if (A[c,2]=="SelfQ") {
+          A[c,7]=infect_other(curr_time);assign('A',A,envir = .GlobalEnv)
+         ## print("SelfQ- line 83 called")
+        } else {
+          A[c,7]=1000000;assign('A',A,envir = .GlobalEnv)
+        ##  print("Q- line 86 called")
+        }
+          }
+         ##   print("finished Is")
+          ###############################
           } else { # New state is R
+          #  print("now R")
             A[c,6]=1000000;A[c,7]=1000000
-            new_infect_time(c,A);assign('A',A,envir = .GlobalEnv)
+            ###############################  
+          #new_infect_time(c,A)
+          if (A[c,1] %in% c("I","Is")) {
+        if (A[c,2]=="Free") {
+          A[c,7]<<-exp_beta(curr_time);assign('A',A,envir = .GlobalEnv)
+        ##  print("Free- line 79 called")
+          #print(paste(A[c,7],"is what it should be"))
+        } else if (A[c,2]=="SelfQ") {
+          A[c,7]=infect_other(curr_time);assign('A',A,envir = .GlobalEnv)
+        ##  print("SelfQ- line 83 called")
+        } else {
+          A[c,7]=1000000;assign('A',A,envir = .GlobalEnv)
+         ## print("Q- line 86 called")
+        }
+          }
+         ##   print("finished R")
+          ###############################
           }
         #new_infect_time(c,A) # updating the time at which i will cause a new infection
         #assign('A',A,envir = .GlobalEnv)
@@ -299,11 +367,29 @@ min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr
         if (!(A[c,1] %in% c("I","Is"))) {print("new_infect1 called but state is not I")}
       r=r+1;A[r,1:5]=new_state(); A[r,6:10]=new_time();assign('r',r,envir = .GlobalEnv) # New infection that we add as a row to the matrix
       #new_infect_time(c,A);assign('A',A,envir = .GlobalEnv) # update the next person that person i will infect. 
-      new_infect_time(c,A)
-      update_tree() # update tree
+      ###############################  
+          #new_infect_time(c,A)
+          if (A[c,1] %in% c("I","Is")) {
+        if (A[c,2]=="Free") {
+          A[c,7]<<-exp_beta(curr_time);assign('A',A,envir = .GlobalEnv)
+        ##  print("Free- line 79 called")
+          #print(paste(A[c,7],"is what it should be"))
+        } else if (A[c,2]=="SelfQ") {
+          A[c,7]=infect_other(curr_time);assign('A',A,envir = .GlobalEnv)
+        ##  print("SelfQ- line 83 called")
+        } else {
+          A[c,7]=1000000;assign('A',A,envir = .GlobalEnv)
+        ##  print("Q- line 86 called")
+        }
+  }
+          ###############################
+      #update_tree()
+      tree=rbind(tree,c(c,r))
+  assign('tree',tree,envir = .GlobalEnv)
+            ###############################
       assign('A',A,envir = .GlobalEnv)
         #new_infect1()
-        print("new_infect")
+      ##  print("new_infect")
       } else if (jloc==8) {
         if (!(A[c,1] %in% c("I","Is"))) { # state is not I or Is - test is surely negative
       A[c,4]="W-"; A[c,8]=curr_time+delta; A[c,9]=curr_time+d_test
@@ -315,7 +401,7 @@ min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr
     }
   assign('A',A,envir = .GlobalEnv)
         #test1()
-        print("test")
+     ##   print("test")
       } else if (jloc==9) {
         if (!(A[c,4] %in% c("W-","W+"))) {print("column not Waiting - something is wrong!!!")}
   if (A[c,4]=="W-" & A[c,2]=="SelfQ") {A[c,4]="Known"; A[c,9]=1000000; A[c,2]="Free"} else if (A[c,4]=="W-" & A[c,2]!="SelfQ") {A[c,4]="Known"; A[c,9]=1000000} else if (A[c,4]=="W+") {A[c,2]="Q"; A[c,4]="Known"; A[c,7]=1000000; A[c,9]=1000000}
@@ -335,7 +421,7 @@ min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr
   
   assign('A',A,envir = .GlobalEnv)
         #test_result1()
-        print("test_result")
+      ##  print("test_result")
       } else { # else jloc==10: Contact traced to positive case
         A[c,2]="SelfQ"
   if (A[c,4]!="W+") {
@@ -352,12 +438,74 @@ min_time=(which.min(A[1,6:10]));curr_time=min(A[1,6:10]);assign('curr_time',curr
       }
       #########################################################
   }
-  print(paste(r, "people are infected", sep=""))
+  #print(paste(sum(A[,1]=="I"|A[,1]=="Is"), " people are infected", sep=""))
+  #print(paste(sum(A[,1]=="R"), " are recovered", sep=""))
+
+  #infec_df$delta[j]<<-delta;infec_df$num_infec[j]<<-sum(A[,1]=="I"|A[,1]=="Is");assign('infec_df',infec_df,envir = .GlobalEnv)
+  #recov_df$delta[j]<<-delta;recov_df$num_recov[j]<<-sum(A[,1]=="R") ;assign('recov_df',recov_df,envir = .GlobalEnv)
+  #print(infec_vec);  print(sum(A[,1]=="I"|A[,1]=="Is"))
+
+ infec_vec=append(infec_vec,sum(A[,1]=="I"|A[,1]=="Is"));assign('infec_vec',infec_vec,envir = .GlobalEnv);#print(infec_vec)
+ recov_vec=append(recov_vec,sum(A[,1]=="R"));assign('recov_vec',recov_vec,envir = .GlobalEnv)
+ 
+ marker=marker+1
+  }
+   #print(infec_vec);print(mean(infec_vec))
+    infec_df$delta[j]<<-delta;infec_df$num_infec[j]<<-mean(infec_vec);assign('infec_df',infec_df,envir = .GlobalEnv)
+    recov_df$delta[j]<<-delta;recov_df$num_recov[j]<<-mean(recov_vec) ;assign('recov_df',recov_df,envir = .GlobalEnv)
+  
+  infec_vec=c()
+  recov_vec=c()
+ }
   
 }
 
 
 ```
+
+```{r}
+test=reshape2::melt(infec_df,id.var="delta")
+Figure1 = ggplot(test,aes(x=delta,y=value)) +
+  geom_line(aes(linetype=variable, colour=variable),size=1.002) +
+  scale_color_manual(values=c("dodgerblue")) +
+  xlab("delta") +
+  ylab("Number of Infected Individuals")+
+  ggtitle("Number of Infected Individuals for each delta interval (one iteration per)") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.50)) +
+  scale_x_continuous(breaks=seq(1, 4.5, 0.2), limits=c(1, 4.5)) +
+  scale_y_continuous(breaks=seq(1, 100, 10), limits=c(0, 100)) 
+  theme(legend.position="bottom") 
+Figure1
+
+df=cbind(infec_df,recov_df);df=df[,-c(3)]
+test=reshape2::melt(df,id.var="delta")
+
+Figure1 = ggplot(test,aes(x=delta,y=value)) +
+  geom_line(aes(linetype=variable, colour=variable),size=0.922) +
+  scale_color_manual(values=c("dodgerblue","darkorange2")) +
+  xlab("delta") +
+  ylab("Number of Infected and Recovered Individuals")+
+  ggtitle("Number of Infected Individuals for each delta interval (ten iterations per delta)") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust=0.50)) +
+  scale_x_continuous(breaks=seq(1, 4.5, 0.2), limits=c(1, 4.5)) +
+  scale_y_continuous(breaks=seq(1, 67, 10), limits=c(0, 67)) 
+  theme(legend.position="bottom") 
+Figure1
+ggsave("fig.pdf",height=9,width=11.5,dpi=72)
+```
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
    # Find which time is smallest
